@@ -45,11 +45,12 @@ Configuration with all options:
 
 ```js
     {
-        module: 'MMM-Metar',
-        position: 'lower_third',
-        config: {
-            exampleContent: 'Welcome world'
-        }
+      module: "MMM-Metar",
+      position: "top_right",
+      config:{
+        airport: "Kcid",
+        fetchInterval: 15*60*1000,
+      }
     },
 ```
 
@@ -57,13 +58,12 @@ Configuration with all options:
 
 Option|Possible values|Default|Description
 ------|------|------|-----------
-`exampleContent`|`string`|not available|The content to show on the page
+`airport`|`string`|Kcid|The airport for which to display the METAR
+`fetchInterval`|int|750000 (15 Minutes)|How often to refresh the data in milliseconds
 
 ## Sending notifications to the module
 
-Notification|Description
-------|-----------
-`TEMPLATE_RANDOM_TEXT`|Payload must contain the text that needs to be shown on this module
+None supported
 
 ## Developer commands
 
