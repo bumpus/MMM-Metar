@@ -1,3 +1,5 @@
 .MMM-Metar div {
-  color: purple;
+  width: 420px;
+  font-size : var(--font-size-small);
+
 }

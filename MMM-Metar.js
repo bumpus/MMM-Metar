@@ -1,7 +1,9 @@
 Module.register("MMM-Metar", {
 
   defaults: {
-    exampleContent: ""
+    airport: "KCID",
+    fetchInterval: 60 * 15 * 1000, // 15 minutes in ms
+    exampleContent: "No METAR LOADED",
   },
 
   /**
@@ -15,10 +17,14 @@ Module.register("MMM-Metar", {
    * Pseudo-constructor for our module. Initialize stuff here.
    */
   start() {
-    this.templateContent = this.config.exampleContent
+    Log.info("in MMM-Metar start()")
+    this.metarContent = this.config.exampleContent
 
     // set timeout for next random text
-    setInterval(() => this.addRandomText(), 3000)
+    setInterval(() => this.getUpdatedMetar(), this.config.fetchInterval)
+
+    //do an initial load...
+    this.getUpdatedMetar()
   },
 
   /**
@@ -29,8 +35,9 @@ Module.register("MMM-Metar", {
    * @param {any} payload - The payload data`returned by the node helper.
    */
   socketNotificationReceived: function (notification, payload) {
-    if (notification === "EXAMPLE_NOTIFICATION") {
-      this.templateContent = `${this.config.exampleContent} ${payload.text}`
+    Log.log("notification received ", notification, " ", payload)
+    if (notification === "METAR_UPDATE") {
+      this.metarContent = `${payload.text}`
       this.updateDom()
     }
   },
@@ -40,13 +47,14 @@ Module.register("MMM-Metar", {
    */
   getDom() {
     const wrapper = document.createElement("div")
-    wrapper.innerHTML = `<b>Title</b><br />${this.templateContent}`
+    wrapper.innerHTML = `${this.metarContent}`
 
     return wrapper
   },
 
-  addRandomText() {
-    this.sendSocketNotification("GET_RANDOM_TEXT", { amountCharacters: 15 })
+  getUpdatedMetar() {
+    Log.log("sending SocketNotification")
+    this.sendSocketNotification("GET_UPDATED_METAR", this.config.airport)
   },
 
   /**
@@ -56,9 +64,5 @@ Module.register("MMM-Metar", {
    * @param {number} payload the payload type.
    */
   notificationReceived(notification, payload) {
-    if (notification === "TEMPLATE_RANDOM_TEXT") {
-      this.templateContent = `${this.config.exampleContent} ${payload}`
-      this.updateDom()
-    }
   }
 })
