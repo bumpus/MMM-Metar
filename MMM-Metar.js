@@ -23,7 +23,7 @@ Module.register("MMM-Metar", {
     // set timeout for next random text
     setInterval(() => this.getUpdatedMetar(), this.config.fetchInterval)
 
-    //do an initial load...
+    // do an initial load...
     this.getUpdatedMetar()
   },
 
@@ -64,5 +64,6 @@ Module.register("MMM-Metar", {
    * @param {number} payload the payload type.
    */
   notificationReceived(notification, payload) {
+    // Stub function not implemented
   }
 })

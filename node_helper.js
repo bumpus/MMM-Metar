@@ -9,9 +9,9 @@ module.exports = NodeHelper.create({
       const url = "https://aviationweather.gov/api/data/metar?ids=" + payload
       Log.info("Url is: ", url)
       const response = await fetch(url)
-      if (!response.ok){
+      if (!response.ok) {
         Log.info("Failed to get METAR, Response status: ", response.status)
-      }else{
+      } else {
         const metarText = await response.text()
         Log.info("Got Metar: ", metarText)
         this.sendSocketNotification("METAR_UPDATE", { text: metarText })
